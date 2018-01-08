@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config=":plugin"><source path="C:\Users\thoaidd\Desktop\OBD\AndrOBD\plugin\build\intermediates\packagedAssets\debug"/></dataSet><dataSet config="main"><source path="C:\Users\thoaidd\Desktop\OBD\AndrOBD\androbd\src\main\assets"/><source path="C:\Users\thoaidd\Desktop\OBD\AndrOBD\androbd\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="C:\Users\thoaidd\Desktop\OBD\AndrOBD\androbd\src\debug\assets"/></dataSet></merger>

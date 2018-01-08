@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\thoaidd\\Desktop\\OBD2\\AndrOBD\\plugin\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values\\values.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\thoaidd\\Desktop\\OBD2\\AndrOBD\\plugin\\build\\intermediates\\packaged_res\\debug\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "55,128,176,238,296,389",
+                        "endColumns": "72,47,61,57,92,77",
+                        "endOffsets": "123,171,233,291,384,462"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,172 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:2:1-76:12
+INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:2:1-76:12
+INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:2:1-76:12
+INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:2:1-76:12
+MERGED from [:plugin] C:\Users\thoaidd\Desktop\OBD2\AndrOBD\plugin\build\intermediates\manifests\full\debug\AndroidManifest.xml:2:1-21:12
+INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:2:1-76:12
+INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:2:1-76:12
+INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:2:1-76:12
+	package
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:3:5-34
+		INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:2:1-76:12
+		INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:2:1-76:12
+		INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:4:5-63
+uses-permission#android.permission.BLUETOOTH_ADMIN
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:7:5-73
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:7:22-71
+uses-permission#android.permission.BLUETOOTH
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:9:5-67
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:9:22-65
+uses-permission#android.permission.WAKE_LOCK
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:11:5-67
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:11:22-65
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:13:5-79
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:13:22-77
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:15:5-80
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:15:22-78
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:17:5-78
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:17:22-76
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:18:5-66
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:18:22-64
+application
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:21:5-74:19
+MERGED from [:plugin] C:\Users\thoaidd\Desktop\OBD2\AndrOBD\plugin\build\intermediates\manifests\full\debug\AndroidManifest.xml:11:5-19:19
+MERGED from [:plugin] C:\Users\thoaidd\Desktop\OBD2\AndrOBD\plugin\build\intermediates\manifests\full\debug\AndroidManifest.xml:11:5-19:19
+	android:label
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:24:9-41
+	android:icon
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:23:9-43
+	android:allowBackup
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:22:9-35
+	android:description
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:25:9-54
+	android:theme
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:26:9-40
+activity#com.fr3ts0n.androbd.MainActivity
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:27:9-43:20
+	android:label
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:30:13-45
+	android:configChanges
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:29:13-74
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:28:13-41
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:32:13-35:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:33:17-68
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:33:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:34:17-76
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:34:27-74
+intent-filter#android.hardware.usb.action.USB_DEVICE_ATTACHED
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:36:13-38:29
+action#android.hardware.usb.action.USB_DEVICE_ATTACHED
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:37:17-89
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:37:25-87
+meta-data#android.hardware.usb.action.USB_DEVICE_ATTACHED
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:40:13-42:56
+	android:resource
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:42:17-54
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:41:17-79
+activity#com.fr3ts0n.androbd.UsbDeviceListActivity
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:44:9-49:15
+	android:label
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:47:13-50
+	android:configChanges
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:46:13-74
+	android:theme
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:48:13-61
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:45:13-50
+activity#com.fr3ts0n.androbd.BtDeviceListActivity
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:50:9-55:15
+	android:label
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:53:13-50
+	android:configChanges
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:52:13-74
+	android:theme
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:54:13-61
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:51:13-49
+activity#com.fr3ts0n.androbd.ChartActivity
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:56:9-61:15
+	android:label
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:59:13-42
+	android:configChanges
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:58:13-71
+	android:theme
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:60:13-49
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:57:13-42
+activity#com.fr3ts0n.androbd.DashBoardActivity
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:62:9-67:15
+	android:label
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:65:13-46
+	android:configChanges
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:64:13-71
+	android:theme
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:66:13-49
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:63:13-46
+activity#com.fr3ts0n.androbd.SettingsActivity
+ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:68:9-73:15
+	android:label
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:71:13-45
+	android:configChanges
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:70:13-71
+	android:theme
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:72:13-49
+	android:name
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml:69:13-45
+uses-sdk
+INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml
+INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml
+MERGED from [:plugin] C:\Users\thoaidd\Desktop\OBD2\AndrOBD\plugin\build\intermediates\manifests\full\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [:plugin] C:\Users\thoaidd\Desktop\OBD2\AndrOBD\plugin\build\intermediates\manifests\full\debug\AndroidManifest.xml:7:5-9:41
+INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml
+INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml
+		ADDED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\thoaidd\Desktop\OBD2\AndrOBD\androbd\src\main\AndroidManifest.xml
+activity#com.fr3ts0n.androbd.plugin.mgr.PluginManager
+ADDED from [:plugin] C:\Users\thoaidd\Desktop\OBD2\AndrOBD\plugin\build\intermediates\manifests\full\debug\AndroidManifest.xml:14:9-18:52
+	android:label
+		ADDED from [:plugin] C:\Users\thoaidd\Desktop\OBD2\AndrOBD\plugin\build\intermediates\manifests\full\debug\AndroidManifest.xml:17:13-45
+	android:configChanges
+		ADDED from [:plugin] C:\Users\thoaidd\Desktop\OBD2\AndrOBD\plugin\build\intermediates\manifests\full\debug\AndroidManifest.xml:16:13-71
+	android:theme
+		ADDED from [:plugin] C:\Users\thoaidd\Desktop\OBD2\AndrOBD\plugin\build\intermediates\manifests\full\debug\AndroidManifest.xml:18:13-49
+	android:name
+		ADDED from [:plugin] C:\Users\thoaidd\Desktop\OBD2\AndrOBD\plugin\build\intermediates\manifests\full\debug\AndroidManifest.xml:15:13-72

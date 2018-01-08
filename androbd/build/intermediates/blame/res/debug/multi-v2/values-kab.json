@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\thoaidd\\Desktop\\OBD2\\AndrOBD\\androbd\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-kab\\values-kab.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\thoaidd\\Desktop\\OBD2\\AndrOBD\\androbd\\src\\main\\res\\values-b+kab\\strings.xml",
+                    "from": {
+                        "startLines": "12,2,11,10,4,16,13,14,15,3,17,8,6,5,7,1,9",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,11,4",
+                        "startOffsets": "741,122,647,607,271,957,790,840,893,232,1006,517,394,340,455,51,558",
+                        "endColumns": "47,108,92,38,67,47,48,51,62,37,70,39,59,52,60,76,47",
+                        "endOffsets": "784,226,735,641,334,1000,834,887,951,265,1072,552,449,388,511,116,601"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,103,212,305,344,412,460,509,561,624,662,733,773,833,886,947,1017",
+                        "endColumns": "47,108,92,38,67,47,48,51,62,37,70,39,59,52,60,69,47",
+                        "endOffsets": "98,207,300,339,407,455,504,556,619,657,728,768,828,881,942,1012,1060"
+                    }
+                }
+            ]
+        }
+    ]
+}

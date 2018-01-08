@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Plugin library</string>
+    <string name="configure">Configure</string>
+    <string name="identify_plugins">Identify plugins</string>
+    <string name="perform_action">Perform action</string>
+    <style name="AppTheme" parent="@android:style/Theme.DeviceDefault.Light.DarkActionBar"/>
+    <style name="AppTheme.Dark" parent="@android:style/Theme.DeviceDefault"/>
+</resources>
