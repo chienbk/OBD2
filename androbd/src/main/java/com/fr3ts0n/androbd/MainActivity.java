@@ -19,6 +19,7 @@
 package com.fr3ts0n.androbd;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -28,6 +29,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -67,9 +69,11 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -171,6 +175,7 @@ public class MainActivity extends PluginManager
 	private static final int REQUEST_CONNECT_DEVICE_USB = 6;
 	private static final int REQUEST_GRAPH_DISPLAY_DONE = 7;
 
+	private static final int REQUEST_CODE_LOC = 22;
 	/**
 	 * app exit parameters
 	 */
@@ -277,7 +282,9 @@ public class MainActivity extends PluginManager
 	{
 		// instantiate superclass
 		super.onCreate(savedInstanceState);
-
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			accessLocationPermission();
+		}
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 		                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -411,6 +418,47 @@ public class MainActivity extends PluginManager
 			case NETWORK:
 				setMode(MODE.ONLINE);
 				break;
+		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.M)
+	private void accessLocationPermission() {
+		int accessCoarseLocation = checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+		int accessFineLocation   = checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION);
+
+		List<String> listRequestPermission = new ArrayList<String>();
+
+		if (accessCoarseLocation != PackageManager.PERMISSION_GRANTED) {
+			listRequestPermission.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+		}
+		if (accessFineLocation != PackageManager.PERMISSION_GRANTED) {
+			listRequestPermission.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
+		}
+
+		if (!listRequestPermission.isEmpty()) {
+			String[] strRequestPermission = listRequestPermission.toArray(new String[listRequestPermission.size()]);
+			requestPermissions(strRequestPermission, REQUEST_CODE_LOC);
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		switch (requestCode) {
+			case REQUEST_CODE_LOC:
+				if (grantResults.length > 0) {
+					for (int gr : grantResults) {
+						// Check if request is granted or not
+						if (gr != PackageManager.PERMISSION_GRANTED) {
+							return;
+						}
+					}
+
+					//TODO - Add your code here to start Discovery
+
+				}
+				break;
+			default:
+				return;
 		}
 	}
 

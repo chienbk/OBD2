@@ -220,8 +220,10 @@ public class BtCommService extends CommService
 			mSocketType = secure ? "Secure" : "Insecure";
 
 			// Modified to work with SPP Devices
+			/*final UUID SPP_UUID = UUID
+				.fromString("00001101-0000-1000-8000-00805F9B34FB");*/
 			final UUID SPP_UUID = UUID
-				.fromString("00001101-0000-1000-8000-00805F9B34FB");
+					.fromString("00002902-0000-1000-8000-00805f9b34fb");
 
 			// Get a BluetoothSocket for a connection with the
 			// given BluetoothDevice
@@ -266,8 +268,10 @@ public class BtCommService extends CommService
 					log.log(Level.SEVERE, "unable to close() " + mSocketType +
 						          " socket during connection failure", e2);
 				}
-				connectionFailed();
-				return;
+				//connectionFailed();
+				//return;
+				// Start the connected thread
+				connected(mmSocket, mmDevice, mSocketType);
 			}
 
 			// Reset the BtConnectThread because we're done
