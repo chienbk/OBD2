@@ -24,12 +24,14 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 
 import com.fr3ts0n.prot.StreamHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -141,8 +143,7 @@ public class BtCommService extends CommService
 	 * @param device The BluetoothDevice that has been connected
 	 */
 	public synchronized void connected(BluetoothSocket socket, BluetoothDevice
-		device, final String socketType)
-	{
+		device, final String socketType) {
 		log.fine("connected, Socket Type:" + socketType);
 
 		// Cancel the thread that completed the connection
@@ -209,7 +210,7 @@ public class BtCommService extends CommService
 	 */
 	private class BtConnectThread extends Thread
 	{
-		private final BluetoothSocket mmSocket;
+		private BluetoothSocket mmSocket;
 		private final BluetoothDevice mmDevice;
 		private String mSocketType;
 
@@ -223,9 +224,9 @@ public class BtCommService extends CommService
 			/*final UUID SPP_UUID = UUID
 				.fromString("00001101-0000-1000-8000-00805F9B34FB");*/
 			final UUID SPP_UUID = UUID
-					.fromString("00002902-0000-1000-8000-00805f9b34fb");
+					.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-			// Get a BluetoothSocket for a connection with the
+			/*// Get a BluetoothSocket for a connection with the
 			// given BluetoothDevice
 			try
 			{
@@ -240,11 +241,19 @@ public class BtCommService extends CommService
 			{
 				log.log(Level.SEVERE, "Socket Type: " + mSocketType + "create() failed", e);
 			}
-			mmSocket = tmp;
+			mmSocket = tmp;*/
+
+			try {
+				mmSocket = device.createRfcommSocketToServiceRecord(SPP_UUID);
+			} catch (IOException e) {
+				e.printStackTrace();
+				Log.d(TAG, "Connect error: " + e.toString());
+			}
 		}
 
 		public void run()
 		{
+			BluetoothSocket tmp = null;
 			log.info("BEGIN mBtConnectThread SocketType:" + mSocketType);
 			setName("BtConnectThread" + mSocketType);
 
@@ -260,7 +269,7 @@ public class BtCommService extends CommService
 			} catch (IOException e)
 			{
 				// Close the socket
-				try
+				/*try
 				{
 					mmSocket.close();
 				} catch (IOException e2)
@@ -268,10 +277,23 @@ public class BtCommService extends CommService
 					log.log(Level.SEVERE, "unable to close() " + mSocketType +
 						          " socket during connection failure", e2);
 				}
-				//connectionFailed();
-				//return;
+				connectionFailed();
+				return;*/
 				// Start the connected thread
-				connected(mmSocket, mmDevice, mSocketType);
+				//connected(mmSocket, mmDevice, mSocketType);
+
+				Class<?> clazz = mmSocket.getRemoteDevice().getClass();
+				Class<?>[] paramTypes = new Class<?>[]{Integer.TYPE};
+				try {
+					Method m = clazz.getMethod("createRfcommSocket", paramTypes);
+					Object[] params = new Object[]{Integer.valueOf(1)};
+					tmp = (BluetoothSocket) m.invoke(mmSocket.getRemoteDevice(), params);
+					tmp.connect();
+					mmSocket = tmp;
+				} catch (Exception e2) {
+					Log.e(TAG, "Couldn't fallback while establishing Bluetooth connection.", e2);
+					//throw new IOException(e2.getMessage());
+				}
 			}
 
 			// Reset the BtConnectThread because we're done
