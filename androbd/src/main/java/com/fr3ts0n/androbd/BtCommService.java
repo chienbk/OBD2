@@ -50,21 +50,19 @@ public class BtCommService extends CommService
 	private BtConnectThread mConnectThread;
 	private BtWorkerThread mConnectedThread;
 	private AcceptThread mAcceptThread;
-	private BluetoothDevice myDevice;
+	private BluetoothDevice mDevice;
 	private String mSocketType;
 	/** communication stream handler */
 	public StreamHandler ser = new StreamHandler();
 
 	// Unique UUID for this application
-	private static final UUID MY_UUID = UUID
-			.fromString("0001101-0000-1000-8000-00805F9B34FB");
+	private static final UUID MY_UUID = UUID.fromString("0001101-0000-1000-8000-00805F9B34FB");
 
 
 	/**
 	 * Constructor. Prepares a new Communication session.
 	 */
-	public BtCommService()
-	{
+	public BtCommService() {
 		super();
 	}
 
@@ -77,9 +75,9 @@ public class BtCommService extends CommService
 	public BtCommService(Context context, Handler handler) {
 		super(context, handler);
 		// set up protocol handlers
-		mAdapter = BluetoothAdapter.getDefaultAdapter();
-		mHandler = handler;
-		mState = STATE.NONE;
+		this.mAdapter = BluetoothAdapter.getDefaultAdapter();
+		this.mHandler = handler;
+		this.mState = STATE.OFFLINE;
 		elm.addTelegramWriter(ser);
 		ser.setMessageHandler(elm);
 	}
@@ -90,7 +88,7 @@ public class BtCommService extends CommService
 	 */
 	@Override
 	public synchronized void start() {
-		log.fine("start");
+		Log.d(TAG, "start");
 
 		// Cancel any thread attempting to make a connection
 		if (mConnectThread != null) {
@@ -121,11 +119,11 @@ public class BtCommService extends CommService
 	 */
 	@Override
 	public synchronized void connect(Object device, boolean secure) {
-		log.fine("connect to: " + device);
-		this.myDevice = (BluetoothDevice) device;
+		this.mDevice = (BluetoothDevice) device;
+		Log.d(TAG, "Connect to: " + mDevice.getName());
+
 		// Cancel any thread attempting to make a connection
-		if (mState == STATE.CONNECTING)
-		{
+		if (mState == STATE.CONNECTING) {
 			if (mConnectThread != null) {
 				mConnectThread.cancel();
 				mConnectThread = null;
@@ -139,7 +137,7 @@ public class BtCommService extends CommService
 		}
 
 		// Start the thread to connect with the given device
-		mConnectThread = new BtConnectThread((BluetoothDevice)device, secure);
+		mConnectThread = new BtConnectThread(mDevice, secure);
 		mConnectThread.start();
 
 		setState(STATE.CONNECTING);
@@ -153,20 +151,18 @@ public class BtCommService extends CommService
 	 */
 	public synchronized void connected(BluetoothSocket socket, BluetoothDevice
 			device, final String socketType) {
-		log.fine("connected, Socket Type:" + socketType);
+		Log.d(TAG, "Connected, socket type: " + socketType);
 
-		this.myDevice = device;
+		this.mDevice = device;
 		this.mSocketType = socketType;
 		// Cancel the thread that completed the connection
-		if (mConnectThread != null)
-		{
+		if (mConnectThread != null) {
 			mConnectThread.cancel();
 			mConnectThread = null;
 		}
 
 		// Cancel any thread currently running a connection
-		if (mConnectedThread != null)
-		{
+		if (mConnectedThread != null) {
 			mConnectedThread.cancel();
 			mConnectedThread = null;
 		}
@@ -183,9 +179,8 @@ public class BtCommService extends CommService
 	 * Stop all threads
 	 */
 	@Override
-	public synchronized void stop()
-	{
-		log.fine("stop");
+	public synchronized void stop() {
+		Log.d(TAG, "Stop");
 		elm.removeTelegramWriter(ser);
 
 		if (mConnectThread != null)
@@ -210,82 +205,92 @@ public class BtCommService extends CommService
 	 * @see BtWorkerThread#write(byte[])
 	 */
 	@Override
-	public synchronized void write(byte[] out)
-	{
-		// Perform the write unsynchronized
-		mConnectedThread.write(out);
+	public synchronized void write(byte[] out) {
+		//Create temporary object
+		BtWorkerThread r;
+		//Synchronize a copy of the BtWorkerThread
+		synchronized (this){
+			if (mState != STATE.CONNECTED)
+				return;
+			r = mConnectedThread;
+		}
+		r.write(out);
 	}
 
 	/**
 	 * This thread runs while attempting to make an outgoing connection with a
 	 * device. It runs straight through; the connection either succeeds or fails.
 	 */
-	private class BtConnectThread extends Thread
-	{
-		private final BluetoothSocket mmSocket;
+	private class BtConnectThread extends Thread {
+		private BluetoothSocket mmSocket;
 		private final BluetoothDevice mmDevice;
 		private String mSocketType;
 
-		public BtConnectThread(BluetoothDevice device, boolean secure)
-		{
+		public BtConnectThread(BluetoothDevice device, boolean secure) {
 			mmDevice = device;
 			BluetoothSocket tmp = null;
 			mSocketType = secure ? "Secure" : "Insecure";
 
-			// Modified to work with SPP Devices
+			/*// Modified to work with SPP Devices
 			final UUID SPP_UUID = UUID
-					.fromString("00001101-0000-1000-8000-00805F9B34FB");
+					.fromString("00001101-0000-1000-8000-00805F9B34FB");*/
 
 			// Get a BluetoothSocket for a connection with the
 			// given BluetoothDevice
-			try
-			{
-				if (secure)
-				{
-					tmp = device.createRfcommSocketToServiceRecord(SPP_UUID);
-				} else
-				{
-					tmp = device.createInsecureRfcommSocketToServiceRecord(SPP_UUID);
+			try {
+				//tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
+				if (secure) {
+					tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
+				} else {
+					tmp = device.createInsecureRfcommSocketToServiceRecord(MY_UUID);
 				}
-			} catch (IOException e)
-			{
+			} catch (IOException e) {
 				log.log(Level.SEVERE, "Socket Type: " + mSocketType + "create() failed", e);
 			}
 			mmSocket = tmp;
 		}
 
-		public void run()
-		{
-			log.info("BEGIN mBtConnectThread SocketType:" + mSocketType);
+		public void run() {
+			Log.d(TAG, "BEGIN mBtConnectThread SocketType: " + mSocketType);
 			setName("BtConnectThread" + mSocketType);
 
 			// Always cancel discovery because it will slow down a connection
 			mAdapter.cancelDiscovery();
 
 			// Make a connection to the BluetoothSocket
-			try
-			{
+			try {
 				// This is a blocking call and will only return on a
 				// successful connection or an exception
 				mmSocket.connect();
-			} catch (IOException e)
-			{
+			} catch (IOException e) {
 				// Close the socket
-				try
-				{
+				try {
+					Log.i(TAG,"Trying fallback...");
+					mmSocket =(BluetoothSocket) mmDevice.getClass().getMethod("createRfcommSocket", new Class[] {int.class}).invoke(mmDevice,1);
+					mmSocket.connect();
+					Log.i(TAG,"Connected");
+				} catch (Exception e2) {
+					Log.e(TAG, "Couldn't establish Bluetooth connection!");
+					try {
+						mmSocket.close();
+					} catch (IOException e3) {
+						Log.e(TAG, "unable to close() " + mSocketType + " socket during connection failure", e3);
+					}
+					connectionFailed();
+					return;
+				/*try {
 					mmSocket.close();
-				} catch (IOException e2)
-				{
+				} catch (IOException e2) {
 					log.log(Level.SEVERE, "unable to close() " + mSocketType +
 							" socket during connection failure", e2);
 				}
 				connectionFailed();
-				return;
+				return;*/
+				}
 			}
 
 			// Reset the BtConnectThread because we're done
-			synchronized (BtCommService.this)
-			{
+			synchronized (BtCommService.this) {
 				mConnectThread = null;
 			}
 
@@ -293,13 +298,10 @@ public class BtCommService extends CommService
 			connected(mmSocket, mmDevice, mSocketType);
 		}
 
-		public void cancel()
-		{
-			try
-			{
+		public void cancel() {
+			try {
 				mmSocket.close();
-			} catch (IOException e)
-			{
+			} catch (IOException e) {
 				log.log(Level.SEVERE, "close() of connect " + mSocketType + " socket failed", e);
 			}
 		}
@@ -309,26 +311,22 @@ public class BtCommService extends CommService
 	 * This thread runs during a connection with a remote device. It handles all
 	 * incoming and outgoing transmissions.
 	 */
-	private class BtWorkerThread extends Thread
-	{
+	private class BtWorkerThread extends Thread {
 		private final BluetoothSocket mmSocket;
 		private final InputStream mmInStream;
 		private final OutputStream mmOutStream;
 
-		public BtWorkerThread(BluetoothSocket socket, String socketType)
-		{
+		public BtWorkerThread(BluetoothSocket socket, String socketType) {
 			log.fine("create BtWorkerThread: " + socketType);
 			mmSocket = socket;
 			InputStream tmpIn = null;
 			OutputStream tmpOut = null;
 
 			// Get the BluetoothSocket input and output streams
-			try
-			{
+			try {
 				tmpIn = socket.getInputStream();
 				tmpOut = socket.getOutputStream();
-			} catch (IOException e)
-			{
+			} catch (IOException e) {
 				log.log(Level.SEVERE, "temp sockets not created", e);
 			}
 
@@ -341,19 +339,20 @@ public class BtCommService extends CommService
 		/**
 		 * run the main communication loop
 		 */
-		public void run()
-		{
+		public void run() {
 			log.info("BEGIN mBtWorkerThread");
-			try
-			{
-				// run the communication thread
-				ser.run();
-			} catch (Exception ex)
-			{
-				// Intentionally ignore
-				log.log(Level.SEVERE, "Comm thread aborted", ex);
+			while (true){
+				try {
+					// run the communication thread
+					ser.run();
+				} catch (Exception ex) {
+					// Intentionally ignore
+					log.log(Level.SEVERE, "Comm thread aborted", ex);
+					connectionLost();
+					BtCommService.this.start();
+					break;
+				}
 			}
-			connectionLost();
 		}
 
 		/**
@@ -361,18 +360,14 @@ public class BtCommService extends CommService
 		 *
 		 * @param buffer The bytes to write
 		 */
-		public void write(byte[] buffer)
-		{
+		public void write(byte[] buffer) {
 			ser.writeTelegram(new String(buffer).toCharArray());
 		}
 
-		public void cancel()
-		{
-			try
-			{
+		public void cancel() {
+			try {
 				mmSocket.close();
-			} catch (IOException e)
-			{
+			} catch (IOException e) {
 				log.log(Level.SEVERE, "close() of connect socket failed", e);
 			}
 		}
@@ -418,6 +413,27 @@ public class BtCommService extends CommService
 					Log.e(TAG, "Socket Type: " + mSocketType
 							+ "accept() failed", e);
 					break;
+				}
+
+				if (socket != null){
+					synchronized (BtCommService.this){
+						switch (mState){
+							case LISTEN:
+							case CONNECTING:
+								//Situation normal. Start the connected thread
+								connected(socket, socket.getRemoteDevice(), mSocketType);
+								break;
+							case NONE:
+							case CONNECTED:
+								//Either not ready or already connected. Terminate new socket
+								try {
+									socket.close();
+								}catch (IOException e){
+									Log.e(TAG, "Could not close unwanted socket" + e.toString());
+								}
+								break;
+						}
+					}
 				}
 			}
 			if (true)
