@@ -58,6 +58,10 @@ public class BtCommService extends CommService
 	// Unique UUID for this application
 	private static final UUID MY_UUID = UUID.fromString("0001101-0000-1000-8000-00805F9B34FB");
 
+	// Unique UUID for this application
+	private static final UUID MY_UUID_SECURE = UUID.fromString("7A9C3B55-78D0-44A7-A94E-A93E3FE118CE");
+	private static final UUID MY_UUID_INSECURE = UUID.fromString("23F18142-B389-4772-93BD-52BDBB2C03E9");
+
 
 	/**
 	 * Constructor. Prepares a new Communication session.

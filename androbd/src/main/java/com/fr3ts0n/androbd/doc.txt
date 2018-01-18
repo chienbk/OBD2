@@ -1,0 +1,1 @@
+https://github.com/don/BluetoothSerial/blob/master/src/android/com/megster/cordova/BluetoothSerialService.java
