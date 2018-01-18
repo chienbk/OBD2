@@ -50,6 +50,10 @@ public class BtCommService extends CommService
 	/** communication stream handler */
 	public StreamHandler ser = new StreamHandler();;
 
+	// Unique UUID for this application
+	private static final UUID MY_UUID = UUID
+			.fromString("0001101-0000-1000-8000-00805F9B34FB");
+
 
 	/**
 	 * Constructor. Prepares a new Communication session.
