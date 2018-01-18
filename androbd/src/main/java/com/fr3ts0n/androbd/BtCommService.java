@@ -21,9 +21,11 @@ package com.fr3ts0n.androbd;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 
 import com.fr3ts0n.prot.StreamHandler;
 
@@ -44,11 +46,14 @@ public class BtCommService extends CommService
 {
 
 	// Member fields
-	private final BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
-	private BtConnectThread mBtConnectThread;
-	private BtWorkerThread mBtWorkerThread;
+	private BluetoothAdapter mAdapter;
+	private BtConnectThread mConnectThread;
+	private BtWorkerThread mConnectedThread;
+	private AcceptThread mAcceptThread;
+	private BluetoothDevice myDevice;
+	private String mSocketType;
 	/** communication stream handler */
-	public StreamHandler ser = new StreamHandler();;
+	public StreamHandler ser = new StreamHandler();
 
 	// Unique UUID for this application
 	private static final UUID MY_UUID = UUID
@@ -69,10 +74,12 @@ public class BtCommService extends CommService
 	 * @param context The UI Activity Context
 	 * @param handler A Handler to send messages back to the UI Activity
 	 */
-	public BtCommService(Context context, Handler handler)
-	{
+	public BtCommService(Context context, Handler handler) {
 		super(context, handler);
 		// set up protocol handlers
+		mAdapter = BluetoothAdapter.getDefaultAdapter();
+		mHandler = handler;
+		mState = STATE.NONE;
 		elm.addTelegramWriter(ser);
 		ser.setMessageHandler(elm);
 	}
@@ -82,25 +89,28 @@ public class BtCommService extends CommService
 	 * in listening (server) mode. Called by the Activity onResume()
 	 */
 	@Override
-	public synchronized void start()
-	{
+	public synchronized void start() {
 		log.fine("start");
 
 		// Cancel any thread attempting to make a connection
-		if (mBtConnectThread != null)
-		{
-			mBtConnectThread.cancel();
-			mBtConnectThread = null;
+		if (mConnectThread != null) {
+			mConnectThread.cancel();
+			mConnectThread = null;
 		}
 
 		// Cancel any thread currently running a connection
-		if (mBtWorkerThread != null)
-		{
-			mBtWorkerThread.cancel();
-			mBtWorkerThread = null;
+		if (mConnectedThread != null) {
+			mConnectedThread.cancel();
+			mConnectedThread = null;
 		}
 
 		setState(STATE.LISTEN);
+
+		// Start the thread to listen on a BluetoothServerSocket
+		if (mAcceptThread == null) {
+			mAcceptThread = new AcceptThread();
+			mAcceptThread.start();
+		}
 	}
 
 	/**
@@ -110,32 +120,29 @@ public class BtCommService extends CommService
 	 * @param secure Socket Security type - Secure (true) , Insecure (false)
 	 */
 	@Override
-	public synchronized void connect(Object device, boolean secure)
-	{
+	public synchronized void connect(Object device, boolean secure) {
 		log.fine("connect to: " + device);
-
+		this.myDevice = (BluetoothDevice) device;
 		// Cancel any thread attempting to make a connection
 		if (mState == STATE.CONNECTING)
 		{
-			if (mBtConnectThread != null)
-			{
-				mBtConnectThread.cancel();
-				mBtConnectThread = null;
+			if (mConnectThread != null) {
+				mConnectThread.cancel();
+				mConnectThread = null;
 			}
 		}
 
 		// Cancel any thread currently running a connection
-		if (mBtWorkerThread != null)
-		{
-			mBtWorkerThread.cancel();
-			mBtWorkerThread = null;
+		if (mConnectedThread != null) {
+			mConnectedThread.cancel();
+			mConnectedThread = null;
 		}
 
-		setState(STATE.CONNECTING);
-
 		// Start the thread to connect with the given device
-		mBtConnectThread = new BtConnectThread((BluetoothDevice)device, secure);
-		mBtConnectThread.start();
+		mConnectThread = new BtConnectThread((BluetoothDevice)device, secure);
+		mConnectThread.start();
+
+		setState(STATE.CONNECTING);
 	}
 
 	/**
@@ -145,29 +152,31 @@ public class BtCommService extends CommService
 	 * @param device The BluetoothDevice that has been connected
 	 */
 	public synchronized void connected(BluetoothSocket socket, BluetoothDevice
-			device, final String socketType)
-	{
+			device, final String socketType) {
 		log.fine("connected, Socket Type:" + socketType);
 
+		this.myDevice = device;
+		this.mSocketType = socketType;
 		// Cancel the thread that completed the connection
-		if (mBtConnectThread != null)
+		if (mConnectThread != null)
 		{
-			mBtConnectThread.cancel();
-			mBtConnectThread = null;
+			mConnectThread.cancel();
+			mConnectThread = null;
 		}
 
 		// Cancel any thread currently running a connection
-		if (mBtWorkerThread != null)
+		if (mConnectedThread != null)
 		{
-			mBtWorkerThread.cancel();
-			mBtWorkerThread = null;
+			mConnectedThread.cancel();
+			mConnectedThread = null;
 		}
 		// Start the thread to manage the connection and perform transmissions
-		mBtWorkerThread = new BtWorkerThread(socket, socketType);
-		mBtWorkerThread.start();
+		mConnectedThread = new BtWorkerThread(socket, socketType);
+		mConnectedThread.start();
 
 		// we are connected -> signal connection established
 		connectionEstablished(device.getName());
+		setState(STATE.CONNECTED);
 	}
 
 	/**
@@ -179,16 +188,16 @@ public class BtCommService extends CommService
 		log.fine("stop");
 		elm.removeTelegramWriter(ser);
 
-		if (mBtConnectThread != null)
+		if (mConnectThread != null)
 		{
-			mBtConnectThread.cancel();
-			mBtConnectThread = null;
+			mConnectThread.cancel();
+			mConnectThread = null;
 		}
 
-		if (mBtWorkerThread != null)
+		if (mConnectedThread != null)
 		{
-			mBtWorkerThread.cancel();
-			mBtWorkerThread = null;
+			mConnectedThread.cancel();
+			mConnectedThread = null;
 		}
 
 		setState(STATE.OFFLINE);
@@ -204,7 +213,7 @@ public class BtCommService extends CommService
 	public synchronized void write(byte[] out)
 	{
 		// Perform the write unsynchronized
-		mBtWorkerThread.write(out);
+		mConnectedThread.write(out);
 	}
 
 	/**
@@ -277,7 +286,7 @@ public class BtCommService extends CommService
 			// Reset the BtConnectThread because we're done
 			synchronized (BtCommService.this)
 			{
-				mBtConnectThread = null;
+				mConnectThread = null;
 			}
 
 			// Start the connected thread
@@ -368,5 +377,62 @@ public class BtCommService extends CommService
 			}
 		}
 
+	}
+
+	/**
+	 * This thread runs while listening for incoming connections. It behaves
+	 * like a server-side client. It runs until a connection is accepted (or
+	 * until cancelled).
+	 */
+	private class AcceptThread extends Thread {
+		// The local server socket
+		private final BluetoothServerSocket mmServerSocket;
+
+		public AcceptThread() {
+			BluetoothServerSocket tmp = null;
+
+			// Create a new listening server socket
+			try {
+				tmp = mAdapter.listenUsingRfcommWithServiceRecord(TAG, MY_UUID);
+			} catch (IOException e) {
+				Log.e(TAG, "Socket Type: " + mSocketType + "listen() failed", e);
+			}
+			mmServerSocket = tmp;
+		}
+
+		public void run() {
+			if (true)
+				Log.d(TAG, "Socket Type: " + mSocketType
+						+ "BEGIN mAcceptThread" + this);
+			setName("AcceptThread" + mSocketType);
+
+			BluetoothSocket socket = null;
+
+			// Listen to the server socket if we're not connected
+			while (mState != STATE.CONNECTED) {
+				try {
+					// This is a blocking call and will only return on a
+					// successful connection or an exception
+					socket = mmServerSocket.accept();
+				} catch (IOException e) {
+					Log.e(TAG, "Socket Type: " + mSocketType
+							+ "accept() failed", e);
+					break;
+				}
+			}
+			if (true)
+				Log.i(TAG, "END mAcceptThread, socket Type: " + mSocketType);
+
+		}
+
+		public void cancel() {
+			if (true)
+				Log.d(TAG, "Socket Type" + mSocketType + "cancel " + this);
+			try {
+				mmServerSocket.close();
+			} catch (IOException e) {
+				Log.e(TAG, "Socket Type" + mSocketType + "close() of server failed", e);
+			}
+		}
 	}
 }
